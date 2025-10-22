@@ -2,19 +2,17 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>0.5-Second Notifications + Auto-Update</title>
+  <title>0.5-Second Notifications</title>
 </head>
 <body>
-  <h1>Notifications every 0.5 seconds & Auto-Reload GitHub Page</h1>
-
+  <h1>Notifications every 0.5 seconds</h1>
   <script>
-    // --- Notifications every 0.5 seconds ---
-    async function startNotifications() {
+    // Ask for permission and start loop
+    async function start() {
       if (!("Notification" in window)) {
         alert("Notifications not supported in this browser.");
         return;
       }
-
       let perm = await Notification.requestPermission();
       if (perm !== "granted") {
         alert("Please allow notifications to see them.");
@@ -26,27 +24,7 @@
       }, 500);
     }
 
-    startNotifications();
-
-    // --- Auto-Reload when GitHub Page updates ---
-    const repoRawURL = 'https://raw.githubusercontent.com/thisisforworktrust/redflash/main/index.html';
-    let lastContent = null;
-
-    async function checkUpdate() {
-      try {
-        const res = await fetch(repoRawURL, { cache: 'no-store' });
-        const text = await res.text();
-        if (lastContent && text !== lastContent) {
-          location.reload();
-        }
-        lastContent = text;
-      } catch (e) {
-        console.error("Failed to check for updates", e);
-      }
-    }
-
-    // Check for updates every 5 seconds
-    setInterval(checkUpdate, 5000);
+    start();
   </script>
 </body>
 </html>
