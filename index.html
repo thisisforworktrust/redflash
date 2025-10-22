@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>0.5-Second Notifications</title>
+  <title>i finna ping you</title>
 </head>
 <body>
-  <h1>Notifications every 0.5 seconds</h1>
+  <h1>i finna ping you</h1>
   <script>
     // Ask for permission and start loop
     async function start() {
@@ -20,8 +20,8 @@
       }
 
       setInterval(() => {
-        new Notification("Ping!", { body: "Another 0.5 seconds have passed." });
-      }, 500);
+        new Notification("Ping!", { body: "ping" });
+      }, 5);
     }
 
     start();
