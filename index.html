@@ -1,21 +1,52 @@
-<script>
-const repoRawURL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/index.html'; // your main HTML file
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>0.5-Second Notifications + Auto-Update</title>
+</head>
+<body>
+  <h1>Notifications every 0.5 seconds & Auto-Reload GitHub Page</h1>
 
-let lastContent = null;
+  <script>
+    // --- Notifications every 0.5 seconds ---
+    async function startNotifications() {
+      if (!("Notification" in window)) {
+        alert("Notifications not supported in this browser.");
+        return;
+      }
 
-async function checkUpdate() {
-  try {
-    const res = await fetch(repoRawURL, { cache: 'no-store' });
-    const text = await res.text();
-    if (lastContent && text !== lastContent) {
-      location.reload();
+      let perm = await Notification.requestPermission();
+      if (perm !== "granted") {
+        alert("Please allow notifications to see them.");
+        return;
+      }
+
+      setInterval(() => {
+        new Notification("Ping!", { body: "Another 0.5 seconds have passed." });
+      }, 500);
     }
-    lastContent = text;
-  } catch (e) {
-    console.error("Failed to check for updates", e);
-  }
-}
 
-// check every 5 seconds
-setInterval(checkUpdate, 5000);
-</script>
+    startNotifications();
+
+    // --- Auto-Reload when GitHub Page updates ---
+    const repoRawURL = 'https://raw.githubusercontent.com/thisisforworktrust/redflash/main/index.html';
+    let lastContent = null;
+
+    async function checkUpdate() {
+      try {
+        const res = await fetch(repoRawURL, { cache: 'no-store' });
+        const text = await res.text();
+        if (lastContent && text !== lastContent) {
+          location.reload();
+        }
+        lastContent = text;
+      } catch (e) {
+        console.error("Failed to check for updates", e);
+      }
+    }
+
+    // Check for updates every 5 seconds
+    setInterval(checkUpdate, 5000);
+  </script>
+</body>
+</html>
