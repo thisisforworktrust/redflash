@@ -1,30 +1,21 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>0.5-Second Notifications</title>
-</head>
-<body>
-  <h1>Notifications every 0.5 seconds</h1>
-  <script>
-    // Ask for permission and start loop
-    async function start() {
-      if (!("Notification" in window)) {
-        alert("Notifications not supported in this browser.");
-        return;
-      }
-      let perm = await Notification.requestPermission();
-      if (perm !== "granted") {
-        alert("Please allow notifications to see them.");
-        return;
-      }
+<script>
+const repoRawURL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/index.html'; // your main HTML file
 
-      setInterval(() => {
-        new Notification("Ping!", { body: "Another 0.5 seconds have passed." });
-      }, 500); // changed from 5000 to 500
+let lastContent = null;
+
+async function checkUpdate() {
+  try {
+    const res = await fetch(repoRawURL, { cache: 'no-store' });
+    const text = await res.text();
+    if (lastContent && text !== lastContent) {
+      location.reload();
     }
+    lastContent = text;
+  } catch (e) {
+    console.error("Failed to check for updates", e);
+  }
+}
 
-    start();
-  </script>
-</body>
-</html>
+// check every 5 seconds
+setInterval(checkUpdate, 5000);
+</script>
