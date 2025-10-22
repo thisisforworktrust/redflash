@@ -5,7 +5,7 @@
   <title>5-Second Notifications</title>
 </head>
 <body>
-  <h1>Notifications every 5 seconds</h1>
+  <h1>Notifications every 1 seconds</h1>
   <script>
     // Ask for permission and start loop
     async function start() {
@@ -20,8 +20,8 @@
       }
 
       setInterval(() => {
-        new Notification("Ping!", { body: "Another 5 seconds have passed." });
-      }, 5000);
+        new Notification("Ping!", { body: "Another 1 seconds have passed." });
+      }, 1000);
     }
 
     start();
